@@ -553,3 +553,4 @@ curl -X POST http://localhost:3000/api/test/reset
 3. **No Hardcoded Names or URLs**: Always rely on `data.hostNames`, `data.venue`, and `process.env.NEXT_PUBLIC_SITE_URL` so invitations are dynamically personalized.
 4. **Form Unsaved Warning**: The editor automatically warns hosts if they try to navigate away with unsaved changes.
 5. **Typecheck Often**: Run `npm run typecheck` or `npx tsc --noEmit` whenever updating template properties to catch missing prop definitions early.
+
