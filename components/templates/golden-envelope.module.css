@@ -1,0 +1,31 @@
+.dialog { --envelope-paper: #fffaf2; --envelope-ink: #302015; --envelope-gold: #c58925; position: fixed; inset: 0; width: 100%; max-width: none; height: 100dvh; max-height: none; margin: 0; padding: max(36px, env(safe-area-inset-top)) 26px max(36px, env(safe-area-inset-bottom)); border: 0; color: var(--envelope-ink); background: radial-gradient(ellipse at 50% 95%, #c5892526, transparent 65%), var(--envelope-paper); overflow: auto; opacity: 1; transition: opacity .6s ease; font-family: 'Cormorant Infant', Georgia, serif; }
+.dialog[open] { display: grid; place-items: center; }
+.dialog::backdrop { background: #fffaf2; }
+.dialog[data-phase=revealing] { opacity: 0; }
+.content { width: min(100%, 580px); text-align: center; margin: auto; }
+.eyebrow { font: 400 12px/1.8 'Forum', Georgia, serif; letter-spacing: .28em; text-transform: uppercase; color: #8a5b12; margin: 0 0 60px; }
+.greeting { margin: -40px 0 50px; font-style: italic; font-size: 22px; }
+.envelope { position: relative; display: block; width: min(100%, 440px); aspect-ratio: 4 / 3; margin: 0 auto; padding: 0; border: 0; background: transparent; cursor: pointer; perspective: 900px; -webkit-tap-highlight-color: transparent; }
+.envelope > span { position: absolute; display: block; }
+.back { inset: 0; border-radius: 8px; background: linear-gradient(160deg, #e6cca5, #c79f68); box-shadow: 0 30px 70px -24px #30201570; }
+.letter { left: 6%; right: 6%; top: 6%; bottom: 6%; display: flex !important; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 22px; border: 1px solid #c5892580; border-radius: 6px; background: var(--envelope-paper); box-shadow: 0 8px 20px #30201514; color: var(--envelope-ink); transition: transform .9s .3s ease; }
+.letter::before { content: ''; position: absolute; inset: 9px; border: 1px solid #c5892540; pointer-events: none; }
+.letterEyebrow { font: 400 9px/1.7 'Forum', Georgia, serif; letter-spacing: .18em; text-transform: uppercase; color: #8a5b12; }
+.names { font: 500 clamp(20px, 5vw, 32px)/1.1 'Cormorant Infant', Georgia, serif; overflow-wrap: anywhere; }
+.letterHeart { font-size: 27px; color: var(--envelope-gold); }
+.front { inset: 0; border-radius: 8px; background: linear-gradient(165deg, #ead2ac, #cfa972); clip-path: polygon(0 0, 50% 55%, 100% 0, 100% 100%, 0 100%); }
+.front::after { content: ''; position: absolute; inset: 0; background: linear-gradient(31deg, transparent 49.8%, #a7793c40 50%, transparent 50.4%), linear-gradient(-31deg, transparent 49.8%, #a7793c40 50%, transparent 50.4%); }
+.flap { inset: 0; z-index: 3; background: linear-gradient(180deg, #e0bf8c, #c39a62); clip-path: polygon(0 0, 100% 0, 50% 55%); transform-origin: top; transition: transform .8s ease, opacity .3s .6s; backface-visibility: hidden; }
+.twine { left: 0; right: 0; top: calc(55% - 2px); z-index: 4; height: 3px; background: repeating-linear-gradient(90deg, #8a6a3a 0 4px, #c3a276 4px 8px); box-shadow: 0 1px 2px #30201540; transition: opacity .4s; }
+.seal { display: grid !important; place-items: center; left: calc(50% - 34px); top: calc(55% - 34px); z-index: 5; width: 68px; height: 68px; border: 2px solid #e6b455; border-radius: 48% 52% 49% 51%; outline: 1px solid #8a5b1230; outline-offset: 3px; color: #fff3cf; background: radial-gradient(circle at 35% 30%, #e6b455, #c58925 60%, #8a5b12); box-shadow: 0 8px 16px #30201566, inset 0 0 0 5px #dfb45c; font: 36px Georgia, serif; transition: opacity .4s, transform .4s; }
+.dialog:not([data-phase=sealed]) .flap { transform: rotateX(180deg); opacity: 0; }
+.dialog:not([data-phase=sealed]) :is(.twine, .seal) { opacity: 0; transform: scale(.6); }
+.dialog:not([data-phase=sealed]) .letter { transform: translateY(-62%); }
+.tap { margin: 48px 0 0; font: 400 12px/1.8 'Forum', Georgia, serif; letter-spacing: .3em; text-transform: uppercase; color: #8a5b12; animation: breathe 2.5s ease-in-out infinite; }
+.caption { font: italic 400 20px/1.6 'Cormorant Infant', Georgia, serif; color: #8a5b12; margin: 12px 0 0; }
+.close { position: fixed; top: 22px; right: 22px; display: grid; place-items: center; width: 44px; height: 44px; border: 1px solid #c5892580; border-radius: 50%; background: var(--envelope-paper); color: var(--envelope-ink); font-size: 26px; cursor: pointer; }
+.dialog button:focus-visible { outline: 2px solid var(--envelope-gold); outline-offset: 8px; }
+.envelope:disabled { cursor: default; }
+@keyframes breathe { 50% { opacity: .5; } }
+@media (max-width: 480px) { .eyebrow { font-size: 10px; letter-spacing: .2em; } .letter { padding: 18px; gap: 9px; } .letterEyebrow { font-size: 7px; } .tap { margin-top: 40px; } .caption { font-size: 18px; } }
+@media (prefers-reduced-motion: reduce) { .dialog, .flap, .letter, .twine, .seal { transition: none; } .tap { animation: none; } }

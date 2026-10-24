@@ -1,0 +1,47 @@
+{
+  "stylesheet_source": "https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,500;1,400;1,500&family=Forum&display=swap",
+  "files": [
+    {
+      "file": "cormorant-infant-italic-400.ttf",
+      "source": "https://fonts.gstatic.com/s/cormorantinfant/v22/Hhy8U44g9vKiM1sORYSiWeAsLN997_IP1zv1ljKnOa3nIw3Qjj0.ttf",
+      "bytes": 285216,
+      "sha256": "75d54cefa49037f1f8732d05f29ed24d0160d17ff9e90dae536775c909b2d70d"
+    },
+    {
+      "file": "cormorant-infant-italic-500.ttf",
+      "source": "https://fonts.gstatic.com/s/cormorantinfant/v22/Hhy8U44g9vKiM1sORYSiWeAsLN997_IP1zv1ljKnOa3nIz_Qjj0.ttf",
+      "bytes": 285372,
+      "sha256": "5563b5fbb5370eb7255f52eba17da87402fdf98415f391e9ea790db3ffefda4f"
+    },
+    {
+      "file": "cormorant-infant-normal-400.ttf",
+      "source": "https://fonts.gstatic.com/s/cormorantinfant/v22/HhyCU44g9vKiM1sORYSiWeAsLN99xfs9KOOc_agJPrgvYOWT.ttf",
+      "bytes": 273572,
+      "sha256": "23938e36c9b2f237cd0e390e74994b6594c80c9e0ca42ab36931fc06e7b6a566"
+    },
+    {
+      "file": "cormorant-infant-normal-500.ttf",
+      "source": "https://fonts.gstatic.com/s/cormorantinfant/v22/HhyCU44g9vKiM1sORYSiWeAsLN99xfs9KOOc_agJPrgdYOWT.ttf",
+      "bytes": 273848,
+      "sha256": "fa10fdd668907b61a6df3ddb773d17c135e6a365cd2c7cd6c0f7729c5c4cc636"
+    },
+    {
+      "file": "forum-normal-400.ttf",
+      "source": "https://fonts.gstatic.com/s/forum/v19/6aey4Ky-Vb8Ew_IW.ttf",
+      "bytes": 241080,
+      "sha256": "0ae21f320a7bae60712908271b15e8bd21f24347a903e246cae8ac5d75a476fc"
+    },
+    {
+      "file": "CormorantInfant-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/cormorantinfant/OFL.txt",
+      "bytes": 4387,
+      "sha256": "60700d351cac4650c51f3f9db318d2a420f8b45052dba2715eb5fec41f0f6956"
+    },
+    {
+      "file": "Forum-OFL.txt",
+      "source": "https://raw.githubusercontent.com/google/fonts/main/ofl/forum/OFL.txt",
+      "bytes": 4399,
+      "sha256": "1bfe7d2aca99042eabf37079152fef8abdda2c36dad454ae89b858a3cb1078c5"
+    }
+  ]
+}

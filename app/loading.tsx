@@ -1,0 +1,1 @@
+export default function Loading() { return <main className="iv-state-page" aria-busy="true"><span aria-hidden="true" className="iv-state-icon">✧</span><h1>One moment</h1><p>Getting everything ready for you.</p><div className="iv-loading-line" /></main>; }

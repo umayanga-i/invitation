@@ -1,0 +1,154 @@
+{
+  "generated_at": "2026-10-23T11:21:11.692141+00:00",
+  "nodes": {
+    "app_layout": {
+      "code_fingerprint": "993e4607f11e36a459a5eccd7c5819f8f015e1557c4eb754fc2cd9f4396c440e",
+      "label": "app/layout.tsx",
+      "last": "2026-10-22T12:44:54.225621+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-22T12:44:54.225621+00:00",
+          "outcome": "useful",
+          "q": "Audit the pages, layouts, navbar, and authentication involved in sharing the logged-in header."
+        }
+      ],
+      "score": 0.978473289,
+      "source_file": "app/layout.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
+    "components_dashboard_navbar": {
+      "code_fingerprint": "",
+      "label": "navbar.tsx",
+      "last": "2026-10-22T12:44:54.225621+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-22T12:44:54.225621+00:00",
+          "outcome": "useful",
+          "q": "Audit the pages, layouts, navbar, and authentication involved in sharing the logged-in header."
+        }
+      ],
+      "score": 0.978473289,
+      "source_file": "components/dashboard/navbar.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
+    "components_invitations_invitation_management_invitationmanagement": {
+      "code_fingerprint": "918dabeb81b2650c9c161af00c5bdc635293dbc15cdec09dd5c927791a2b6d41",
+      "label": "InvitationManagement()",
+      "last": "2026-10-19T03:49:07.118887+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-19T03:49:07.118887+00:00",
+          "outcome": "useful",
+          "q": "How can invitation share URLs be shortened and keep invitation data out of query parameters?"
+        },
+        {
+          "date": "2026-10-19T03:39:29.147664+00:00",
+          "outcome": "useful",
+          "q": "Why do public invitation links show not found when opened in another browser, and how are invitations, guest tokens, and storage connected?"
+        }
+      ],
+      "score": 1.810126411,
+      "source_file": "components/invitations/invitation-management.tsx",
+      "status": "preferred",
+      "uses": 2
+    },
+    "components_invitations_public_invitation_page_publicinvitationpage": {
+      "code_fingerprint": "ae07c5c47d13ee62a4ba75b870cae8292632202dbd1e5662d17ad4b3c764e426",
+      "label": "PublicInvitationPage()",
+      "last": "2026-10-19T03:49:07.118887+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-19T03:49:07.118887+00:00",
+          "outcome": "useful",
+          "q": "How can invitation share URLs be shortened and keep invitation data out of query parameters?"
+        },
+        {
+          "date": "2026-10-19T03:39:29.147664+00:00",
+          "outcome": "useful",
+          "q": "Why do public invitation links show not found when opened in another browser, and how are invitations, guest tokens, and storage connected?"
+        }
+      ],
+      "score": 1.810126411,
+      "source_file": "components/invitations/public-invitation-page.tsx",
+      "status": "preferred",
+      "uses": 2
+    },
+    "components_templates_template_editor": {
+      "code_fingerprint": "7b7e0e0808d0376d449c38978b7e2772017ba1ac133248cbf21c041c2535e1dc",
+      "label": "template-editor.tsx",
+      "last": "2026-10-22T12:44:54.225621+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-22T12:44:54.225621+00:00",
+          "outcome": "useful",
+          "q": "Audit the pages, layouts, navbar, and authentication involved in sharing the logged-in header."
+        }
+      ],
+      "score": 0.978473289,
+      "source_file": "components/templates/template-editor.tsx",
+      "status": "tentative",
+      "uses": 1
+    },
+    "lib_auth": {
+      "code_fingerprint": "f398c7cffc32873b30ba72ff88699b398c3350ea83ba83be5b5d9b7a926477be",
+      "label": "auth.ts",
+      "last": "2026-10-22T12:44:54.225621+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-22T12:44:54.225621+00:00",
+          "outcome": "useful",
+          "q": "Audit the pages, layouts, navbar, and authentication involved in sharing the logged-in header."
+        }
+      ],
+      "score": 0.978473289,
+      "source_file": "lib/auth.ts",
+      "status": "tentative",
+      "uses": 1
+    },
+    "lib_invitations_getinvitationbyslug": {
+      "code_fingerprint": "aac6cb58afc1f25b93cb649cfb9b07f23dfe942475c2162bbfcc586b398fc54c",
+      "label": "getInvitationBySlug()",
+      "last": "2026-10-19T03:49:07.118887+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-19T03:49:07.118887+00:00",
+          "outcome": "useful",
+          "q": "How can invitation share URLs be shortened and keep invitation data out of query parameters?"
+        },
+        {
+          "date": "2026-10-19T03:39:29.147664+00:00",
+          "outcome": "useful",
+          "q": "Why do public invitation links show not found when opened in another browser, and how are invitations, guest tokens, and storage connected?"
+        }
+      ],
+      "score": 1.810126411,
+      "source_file": "lib/invitations.ts",
+      "status": "preferred",
+      "uses": 2
+    },
+    "lib_mock_data_loadstate": {
+      "code_fingerprint": "b7cd0f55cbdca55325c22e82487b4558223809a62c0ef86698b91a8c3023921b",
+      "label": "loadState()",
+      "last": "2026-10-19T03:49:07.118887+00:00",
+      "provenance": [
+        {
+          "date": "2026-10-19T03:49:07.118887+00:00",
+          "outcome": "useful",
+          "q": "How can invitation share URLs be shortened and keep invitation data out of query parameters?"
+        },
+        {
+          "date": "2026-10-19T03:39:29.147664+00:00",
+          "outcome": "useful",
+          "q": "Why do public invitation links show not found when opened in another browser, and how are invitations, guest tokens, and storage connected?"
+        }
+      ],
+      "score": 1.810126411,
+      "source_file": "lib/mock-data.ts",
+      "status": "preferred",
+      "uses": 2
+    }
+  },
+  "version": 1
+}

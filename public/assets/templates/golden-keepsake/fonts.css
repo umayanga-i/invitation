@@ -1,0 +1,35 @@
+@font-face {
+  font-family: 'Cormorant Infant';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/templates/golden-keepsake/cormorant-infant-italic-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Infant';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/templates/golden-keepsake/cormorant-infant-italic-500.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Infant';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/templates/golden-keepsake/cormorant-infant-normal-400.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Cormorant Infant';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(/assets/templates/golden-keepsake/cormorant-infant-normal-500.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Forum';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/assets/templates/golden-keepsake/forum-normal-400.ttf) format('truetype');
+}

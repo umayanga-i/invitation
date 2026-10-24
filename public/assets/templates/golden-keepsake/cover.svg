@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="900" viewBox="0 0 600 900">
+  <defs>
+    <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#fffdf7"/><stop offset="1" stop-color="#f3e3c3"/></linearGradient>
+    <linearGradient id="envelope" x2="0.5" y2="1"><stop stop-color="#ead2ac"/><stop offset="1" stop-color="#cfa972"/></linearGradient>
+    <radialGradient id="seal" cx=".35" cy=".3"><stop stop-color="#e6b455"/><stop offset=".65" stop-color="#c58925"/><stop offset="1" stop-color="#8a5b12"/></radialGradient>
+  </defs>
+  <path fill="url(#paper)" d="M0 0h600v900H0z"/>
+  <rect x="22" y="22" width="556" height="856" rx="8" stroke="#bd923f" fill="none"/>
+  <rect x="32" y="32" width="536" height="836" rx="5" stroke="#bd923f" stroke-opacity=".35" fill="none"/>
+  <g fill="#8a5b12" text-anchor="middle" font-family="Georgia,serif">
+    <text x="300" y="128" font-size="12" letter-spacing="4">SEALED WITH LOVE</text>
+    <text x="300" y="219" font-size="53">Nimesh</text><text x="300" y="267" font-size="33" font-style="italic">&amp;</text><text x="300" y="325" font-size="53">Dilhani</text>
+  </g>
+  <g transform="translate(90 427)">
+    <rect width="420" height="288" rx="8" fill="#bd965f" opacity=".2" y="12"/>
+    <rect width="420" height="280" rx="6" fill="url(#envelope)"/>
+    <path d="m0 280 210-147 210 147" fill="#e4c591" stroke="#b68a4c" stroke-opacity=".45"/>
+    <path d="m0 0 210 158L420 0" fill="#d8b782" stroke="#b68a4c" stroke-opacity=".45"/>
+    <path d="M0 156h420" stroke="#9c7848" stroke-width="3" stroke-dasharray="5 2"/>
+    <circle cx="210" cy="156" r="38" fill="url(#seal)" stroke="#e6b455" stroke-width="3"/>
+    <circle cx="210" cy="156" r="30" fill="none" stroke="#edc66e"/>
+    <text x="210" y="169" text-anchor="middle" font-family="Georgia,serif" font-size="38" fill="#fff3cf">♡</text>
+  </g>
+  <text x="300" y="790" text-anchor="middle" fill="#8a5b12" font-family="Georgia,serif" font-size="14" letter-spacing="3">27 DECEMBER 2026</text>
+</svg>
