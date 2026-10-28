@@ -33,22 +33,22 @@ export function ProfilePage() {
     return () => window.removeEventListener('auth-change', sync);
   }, []);
 
-  function saveProfile(event: React.FormEvent<HTMLFormElement>) {
+  async function saveProfile(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError(''); setNotice('');
     if (!name.trim()) { setError('Please enter your name.'); return; }
     try {
-      const updated = updateProfile({ name, phone, avatar });
+      const updated = await updateProfile({ name, phone, avatar });
       setUser(updated); setNotice('Profile updated.');
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'Could not update your profile.'); }
   }
 
-  function savePassword(event: React.FormEvent<HTMLFormElement>) {
+  async function savePassword(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault(); setError(''); setNotice('');
     if (newPassword.length < 8) { setError('Use at least 8 characters for your new password.'); return; }
     if (newPassword !== confirmPassword) { setError('The new passwords do not match.'); return; }
     try {
-      changePassword(currentPassword, newPassword);
-      setCurrentPassword(''); setNewPassword(''); setConfirmPassword(''); setNotice('Password updated for this mock account on this device.');
+      await changePassword(currentPassword, newPassword);
+      setCurrentPassword(''); setNewPassword(''); setConfirmPassword(''); setNotice('Password updated.');
     } catch (cause) { setError(cause instanceof Error ? cause.message : 'Could not change your password.'); }
   }
 

@@ -12,6 +12,7 @@ function StatusBadge({ status }: { status: Invitation['status'] }) {
     draft: 'bg-[var(--iv-gold-soft)] text-[var(--iv-muted)]',
     published: 'bg-emerald-900/60 text-emerald-300',
     archived: 'bg-[var(--iv-cream)] text-[var(--iv-muted)]',
+    suspended: 'bg-rose-100 text-rose-900',
   };
   return <span className={`inline-block rounded-sm px-2 py-0.5 text-[9px] font-semibold uppercase tracking-widest ${styles[status]}`}>{status}</span>;
 }
@@ -37,6 +38,7 @@ function InvitationCard({ invitation }: { invitation: Invitation }) {
         </div>
         <div className="p-3.5">
           <StatusBadge status={invitation.status} />
+          {invitation.status === 'suspended' && <p className="mt-2 rounded bg-rose-50 p-2 text-xs text-rose-900">Suspended by admin{invitation.suspendedReason ? `: ${invitation.suspendedReason}` : '.'}</p>}
           <h3 className="mt-2 line-clamp-2 text-sm font-medium leading-tight text-[var(--iv-deep)]">{invitation.title}</h3>
           <p className="mt-1 text-xs text-[var(--iv-muted)]">{date}</p>
           <p className="mt-2 text-[11px] text-[var(--iv-muted)]">{invitation.type === 'common' ? 'Shared invitation' : 'Personal invitation'}</p>

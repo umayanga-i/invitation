@@ -108,7 +108,10 @@ export interface Invitation {
   type: 'common' | 'personal';
   customData: InvitationCustomData;
   createdAt: string;   // ISO date string
-  status: 'draft' | 'published' | 'archived';
+  status: 'draft' | 'published' | 'archived' | 'suspended';
+  suspendedReason?: string;
+  lastEditedByAdmin?: boolean;
+  updatedAt?: string;
   guestCount?: number;
   rsvpCount?: number;
 }
@@ -808,7 +811,7 @@ export const MOCK_INVITATION_CARDS: MockInvitation[] = HARDCODED_INVITATIONS.map
     category: template?.category ?? 'wedding',
     date: invitation.customData.date,
     guestCount: guests.length,
-    status: invitation.status === 'published' ? 'sent' : invitation.status,
+    status: invitation.status === 'published' ? 'sent' : invitation.status === 'suspended' ? 'archived' : invitation.status,
     rsvpCount: guests.filter((guest) => guest.rsvpStatus !== 'pending').length,
     primaryColor: invitation.customData.colors.primary,
     symbol: '✦',

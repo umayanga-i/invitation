@@ -1,0 +1,54 @@
+import { test,expect } from './fixtures';
+import { HARDCODED_INVITATIONS } from '../../lib/mock-data';
+
+test('admin opens a real user invitation from the user page and invitations list',async({page,browser})=>{
+  const userContext=await browser.newContext({baseURL:'http://localhost:3000'});
+  const phone=`077${String(Date.now()).slice(-7)}`;
+  const userPage=await userContext.newPage();
+  await userPage.goto('/login');
+  await userPage.getByRole('button',{name:'Phone',exact:true}).click();
+  await userPage.getByLabel('Phone Number').fill(phone);
+  await userPage.getByRole('button',{name:'Send OTP'}).click();
+  await userPage.getByLabel('One-Time Password').fill('123456');
+  await userPage.getByRole('button',{name:'Verify & Sign In'}).click();
+  await userPage.waitForURL('**/dashboard');
+  const userResponse=await userContext.request.get('/api/auth');
+  const user=await userResponse.json();
+  const sample=HARDCODED_INVITATIONS[0];
+  const title=`Admin detail ${Date.now()}`;
+  const created=await userContext.request.post('/api/invitations',{data:{title,templateId:sample.templateId,userId:user.id,type:'personal',customData:{...sample.customData,guestName:'Test Guest'}}});
+  expect(created.status()).toBe(201);
+  const invitation=await created.json();
+  const firstLogin=user.last_login_at;
+  await userContext.request.post('/api/auth',{data:{action:'logout'}});
+  expect(await (await userContext.request.get('/api/auth')).json()).toBeNull();
+  await userContext.request.post('/api/auth',{data:{action:'phone',phone:phone}});
+  const secondLogin=await userContext.request.post('/api/auth',{data:{action:'phone',phone:phone,otp:'123456',verify:true}});
+  expect(secondLogin.ok()).toBeTruthy();
+  const relogged=await secondLogin.json();
+  expect(new Date(relogged.user.last_login_at).getTime()).toBeGreaterThan(new Date(firstLogin).getTime());
+  await userContext.close();
+
+  await page.goto('/admin-login');
+  await page.getByLabel('Email').fill('admin@invite.test');
+  await page.getByLabel('Password').fill('Admin@1234');
+  await page.getByRole('button',{name:'Sign in'}).click();
+  await page.waitForURL('**/admin');
+
+  const userDetail=await (await page.request.get(`/api/admin/users/${user.id}`)).json();
+  expect(userDetail.plan).toBe('free');
+  expect(new Date(userDetail.last_login_at).getTime()).toBeGreaterThan(new Date(firstLogin).getTime());
+  expect(userDetail.invitations.some((row:{id:string})=>row.id===invitation.id)).toBeTruthy();
+  await page.goto('/admin/users');
+  const userRow=page.getByRole('row').filter({hasText:user.phone});
+  await expect(userRow).toContainText('free');
+  await page.goto(`/admin/users/${user.id}`);
+  await page.getByRole('link',{name:new RegExp(title)}).click();
+  await expect(page.getByRole('heading',{name:title})).toBeVisible();
+  await expect(page.getByText('Invited')).toBeVisible();
+  await expect(page.getByRole('heading',{name:'Guests'})).toBeVisible();
+  await page.goto('/admin/invitations',{waitUntil:'domcontentloaded'});
+  await page.getByRole('link',{name:new RegExp(title)}).click();
+  await expect(page.getByRole('heading',{name:title})).toBeVisible();
+  await expect(page.getByText('No reply')).toBeVisible();
+});

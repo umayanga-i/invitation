@@ -15,7 +15,7 @@ export default defineConfig({
     { name: 'desktop', use: { browserName: 'chromium', viewport: { width: 1280, height: 800 } } },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: 'npm run dev -- --webpack',
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

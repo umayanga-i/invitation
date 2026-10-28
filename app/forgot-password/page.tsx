@@ -5,87 +5,91 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { BRAND_NAME } from '@/lib/brand';
+import { resetPasswordWithEmail } from '@/lib/auth';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [step, setStep] = useState<'email' | 'code' | 'done'>('email');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    if (!email.trim()) return setError('Email is required');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-      return setError('Enter a valid email address');
+  const request = async (action: 'send' | 'verify') => {
+    const response = await fetch('/api/auth/email-otp', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, email: email.trim().toLowerCase(), ...(action === 'verify' ? { otp } : {}) }),
+    });
+    const result = await response.json();
+    if (!response.ok || (action === 'send' ? !result.success : !result.verified)) {
+      throw new Error(result.error ?? (action === 'send' ? 'Unable to send a code.' : 'That code is incorrect or expired.'));
+    }
+  };
 
+  const handleSend = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); setError(''); setLoading(true);
+    try { await request('send'); setStep('code'); }
+    catch (cause) { setError(cause instanceof Error ? cause.message : 'Unable to send a code.'); }
+    finally { setLoading(false); }
+  };
+
+  const handleReset = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); setError('');
+    if (!/^\d{6}$/.test(otp)) return setError('Enter the 6-digit code from your email.');
+    if (password.length < 8) return setError('Use at least 8 characters for your password.');
+    if (password !== confirm) return setError('Passwords do not match.');
     setLoading(true);
-    // TODO: Replace with Supabase resetPasswordForEmail()
-    await new Promise((r) => setTimeout(r, 800));
-    setLoading(false);
-    setSent(true);
+    try {
+      await request('verify');
+      await resetPasswordWithEmail(email, password);
+      setStep('done');
+    } catch (cause) { setError(cause instanceof Error ? cause.message : 'Unable to reset your password.'); }
+    finally { setLoading(false); }
   };
 
   return (
-    <div className="iv-auth flex min-h-screen items-center justify-center bg-[var(--iv-ivory)] px-4">
+    <main className="iv-auth flex min-h-screen items-center justify-center bg-[var(--iv-ivory)] px-4 py-10">
       <div className="w-full max-w-md space-y-6">
-        <div className="text-center">
-          <h1 className="font-[Georgia,serif] text-3xl tracking-tight">
-            {BRAND_NAME}<span className="text-[var(--iv-gold)] ml-1.5">.</span>
-          </h1>
-          <p className="text-[var(--iv-muted)] text-sm mt-2">Reset your password</p>
-        </div>
+        <header className="text-center iv-auth-enter">
+          <h1>{BRAND_NAME}<span className="ml-1.5">.</span></h1>
+          <p className="mt-2 text-sm text-[var(--iv-muted)]">Reset your password</p>
+        </header>
 
-        <div className="iv-auth-card bg-white border border-[var(--iv-gold-soft)] rounded-xl p-6 space-y-5">
-          {sent ? (
-            <div className="text-center space-y-3 py-4">
-              <div className="text-3xl">&#9993;</div>
-              <h2 className="text-lg font-medium text-[var(--iv-ink)]">Check your email</h2>
-              <p className="text-sm text-[var(--iv-muted)] leading-relaxed">
-                If an account with <strong>{email}</strong> exists, we&apos;ve sent a
-                password reset link. Check your inbox and spam folder.
-              </p>
-              <Button
-                variant="secondary"
-                onClick={() => { setSent(false); setEmail(''); }}
-                className="mt-2"
-              >
-                Try another email
-              </Button>
+        <section className="iv-auth-card iv-auth-enter space-y-5 rounded-xl bg-white p-6">
+          {step === 'done' ? (
+            <div className="space-y-4 py-3 text-center" role="status">
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--iv-cream)] text-2xl text-[var(--iv-maroon)]" aria-hidden="true">✓</div>
+              <h2 className="text-xl text-[var(--iv-deep)]">Password updated</h2>
+              <p className="text-sm text-[var(--iv-muted)]">Your password has been changed for this account.</p>
+              <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-full bg-[var(--iv-maroon)] px-6 text-sm text-white">Back to sign in</Link>
             </div>
-          ) : (
+          ) : step === 'email' ? (
             <>
-              {error && (
-                <p className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">{error}</p>
-              )}
-              <p className="text-sm text-[var(--iv-muted)] leading-relaxed">
-                Enter the email address associated with your account and we&apos;ll send
-                you a link to reset your password.
-              </p>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <Input
-                  label="Email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  autoComplete="email"
-                />
-                <Button type="submit" loading={loading} className="w-full">
-                  Send Reset Link
-                </Button>
+              <p className="text-sm leading-relaxed text-[var(--iv-muted)]">Enter your email and we&apos;ll send a one-time code to verify it&apos;s you.</p>
+              {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
+              <form onSubmit={handleSend} className="space-y-4">
+                <Input label="Email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} autoComplete="email" required />
+                <Button type="submit" loading={loading} className="w-full">Send verification code</Button>
               </form>
             </>
+          ) : (
+            <>
+              <p className="text-sm leading-relaxed text-[var(--iv-muted)]">Enter the code sent to <strong>{email}</strong>, then choose a new password.</p>
+              {error && <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-600">{error}</p>}
+              <form onSubmit={handleReset} className="space-y-4">
+                <Input label="One-time code" type="text" inputMode="numeric" value={otp} onChange={e => setOtp(e.target.value.replace(/\D/g, '').slice(0, 6))} maxLength={6} autoComplete="one-time-code" required />
+                <Input label="New password" type="password" value={password} onChange={e => setPassword(e.target.value)} autoComplete="new-password" minLength={8} required />
+                <Input label="Confirm new password" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} autoComplete="new-password" required />
+                <Button type="submit" loading={loading} className="w-full">Verify code &amp; reset password</Button>
+              </form>
+              <button type="button" onClick={() => { setStep('email'); setOtp(''); setError(''); }} className="w-full text-center text-xs text-[var(--iv-maroon)] hover:underline">Use a different email</button>
+            </>
           )}
-        </div>
+        </section>
 
-        <p className="text-center text-sm text-[var(--iv-muted)]">
-          Remember your password?{' '}
-          <Link href="/login" className="text-[var(--iv-maroon)] font-medium hover:underline">
-            Sign in
-          </Link>
-        </p>
+        <p className="text-center text-sm text-[var(--iv-muted)]">Remember your password? <Link href="/login" className="font-medium text-[var(--iv-maroon)] hover:underline">Sign in</Link></p>
       </div>
-    </div>
+    </main>
   );
 }

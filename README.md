@@ -184,3 +184,9 @@ The code is structured with dedicated adapter boundaries for effortless integrat
 - **PostgreSQL / Supabase Database**: Replace SQLite statements in [`lib/db/index.ts`](./lib/db/index.ts) with Supabase database queries.
 - **Supabase Storage**: Hook up [`lib/storage.ts`](./lib/storage.ts) to upload directly to an S3/Supabase storage bucket.
 - **WhatsApp Cloud API / Twilio**: Connect [`lib/invitations.ts`](./lib/invitations.ts) to dispatch real WhatsApp/SMS messages.
+
+## Admin panel (development mock)
+
+In development, visit `/admin-login` and use `admin@invite.test` / `Admin@1234`. Admin access uses a server-signed, HTTP-only session and is unavailable in production. The panel is at `/admin`, with Users, Invitations, Templates, and Audit log sections. The seeded account is mock data only; production administrator roles must be assigned in the database `role` column, never in client code or `NEXT_PUBLIC_*` settings. When moving to Supabase, enforce access with database policies and row-level security (RLS) as well as server-side role checks.
+
+Use `npm run seed:demo` to add demo users and an invitation in development. Promote an existing real account with `npm run make-admin -- user@example.com`; both commands use the configured SQLite database, and demo seeding / promotion are blocked in production.

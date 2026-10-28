@@ -86,6 +86,7 @@ export function AppHeader({ user }: { user: AuthUser }) {
 
   async function logout() {
     setSigningOut(true);
+    await fetch('/api/admin/session', { method: 'DELETE' }).catch(() => undefined);
     await signOut();
     closeOverlays();
     router.push('/');
@@ -105,7 +106,7 @@ export function AppHeader({ user }: { user: AuthUser }) {
   }
 
   function navigation() {
-    return links.map(({ label, href }) => <Link key={label} href={href} onClick={closeOverlays} className="iv-app-link" aria-current={isActive(label) ? 'page' : undefined}>{label}</Link>);
+    return <>{links.map(({ label, href }) => <Link key={label} href={href} onClick={closeOverlays} className="iv-app-link" aria-current={isActive(label) ? 'page' : undefined}>{label}</Link>)}{user.role === 'admin' && <Link href="/admin" onClick={closeOverlays} className="iv-app-link">Admin</Link>}</>;
   }
 
   function searchForm(mobile = false) {

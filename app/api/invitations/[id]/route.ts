@@ -31,7 +31,8 @@ export async function PATCH(request: Request, { params }: Context) {
       ('userId' in body && body.userId !== owner.id)) {
       return Response.json({ error: 'Invalid invitation update. Check field types and maximum lengths.' }, { status: 400 });
     }
-    const updated = dbAdapter.updateInvitation(id, body);
+    const patch = Object.fromEntries(['title', 'templateId', 'type', 'status', 'slug', 'customData'].filter((key) => key in body).map((key) => [key, body[key]]));
+    const updated = dbAdapter.updateInvitation(id, patch);
     return updated ? Response.json(updated) : Response.json({ error: 'Invitation not found.' }, { status: 404 });
   } catch (error) {
     const invalidJson = error instanceof SyntaxError;

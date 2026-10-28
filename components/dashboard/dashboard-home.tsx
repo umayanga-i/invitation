@@ -16,14 +16,14 @@ const CATEGORY_ROWS = [
   { key: 'corporate', title: 'Corporate', emoji: '✨' },
 ] as const;
 
-function toCard(template: Template, index: number): MockTemplate {
+function toCard(template: Template, index: number, tier?: 'free' | 'pro'): MockTemplate {
   return {
     ...template,
     bgColor: template.colors.secondary,
     primaryColor: template.colors.primary,
     secondaryColor: template.colors.accent,
     symbol: ['✦', '❋', '❀', '♡'][index % 4],
-    isPremium: index % 6 === 5,
+    isPremium: tier ? tier === 'pro' : index % 6 === 5,
   };
 }
 
@@ -34,10 +34,12 @@ export function DashboardHome() {
 
   useEffect(() => {
     // Load templates asynchronously to avoid synchronous setState inside effect body
-    const load = () => {
+    const load = async () => {
       const storedTemplates = loadState().templates;
-      const source = [...storedTemplates, ...HARDCODED_TEMPLATES.filter((item) => !storedTemplates.some((stored) => stored.id === item.id))];
-      setTemplates(source.map(toCard));
+      const response = await fetch('/api/templates').catch(() => null);
+      const enabled = response?.ok ? await response.json() as Array<Template & { tier: 'free' | 'pro' }> : HARDCODED_TEMPLATES.map((item,index)=>({...item,tier:index%6===5?'pro' as const:'free' as const}));
+      const source = [...storedTemplates.filter(item=>enabled.some(template=>template.id===item.id)), ...enabled.filter((item) => !storedTemplates.some((stored) => stored.id === item.id))];
+      setTemplates(source.map((template,index) => toCard(template,index,(template as Template & {tier?: 'free'|'pro'}).tier)));
       setLoading(false);
     };
     // Use microtask so setState is not called synchronously in the effect

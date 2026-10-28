@@ -3,6 +3,7 @@ import { createGuestLink, createInvitationLink } from '@/lib/links';
 import { apiErrorResponse } from '@/lib/api-errors';
 import { isAuthFailure, requireApiUser } from '@/lib/api-auth';
 import { isRecord, validateInvitationCustomData } from '@/lib/api-validation';
+import { canUseTemplate } from '@/lib/server/admin';
 
 export async function GET(request: Request) {
   try {
@@ -32,6 +33,10 @@ export async function POST(request: Request) {
       return Response.json({ error: 'Invalid invitation data. Check required fields and maximum lengths.' }, { status: 400 });
     }
     if (input.userId !== user.id) return Response.json({ error: 'You cannot create an invitation for another user.' }, { status: 403 });
+    const setting = dbAdapter.listTemplateSettings().find((template) => template.id === input.templateId);
+    if (setting && !setting.enabled) return Response.json({ error: 'This template is currently unavailable.' }, { status: 404 });
+    const account = dbAdapter.getAdminUser(user.id);
+    if (setting?.tier === 'pro' && !canUseTemplate(account, setting.tier)) return Response.json({ error: 'Upgrade to Pro to use this template.' }, { status: 403 });
     const invitation = dbAdapter.insertInvitation(input as unknown as NewInvitation);
     createInvitationLink(invitation.id);
     const created = dbAdapter.getInvitation(invitation.id)!;

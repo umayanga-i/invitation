@@ -1,0 +1,2 @@
+import { requireAdmin, adminUnauthorized, getStats } from '@/lib/server/admin';
+export async function GET(request:Request){try{await requireAdmin();const params=new URL(request.url).searchParams;const days=Number(params.get('days')??30);if(![7,30,90].includes(days))return Response.json({error:'Date range must be 7, 30, or 90 days.'},{status:400});return Response.json(getStats(days,params.get('includeDemo')==='1'));}catch(e){console.error('[admin stats]',e);return adminUnauthorized(e)??Response.json({error:'Unable to load stats.'},{status:500});}}

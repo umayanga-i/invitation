@@ -1,16 +1,14 @@
 import { dbAdapter } from '@/lib/db';
 import { AUTH_COOKIE_NAME } from '@/lib/auth-constants';
+import { USER_COOKIE, userFromToken } from '@/lib/server/user-session';
 
 type AuthUser = { id: string };
 
 function userFromCookie(request: Request): AuthUser | null {
-  const prefix = `${AUTH_COOKIE_NAME}=`;
+  const prefix = `${USER_COOKIE}=`;
   const cookie = request.headers.get('cookie')?.split(';').map((part) => part.trim()).find((part) => part.startsWith(prefix));
   if (!cookie) return null;
-  try {
-    const user = JSON.parse(decodeURIComponent(cookie.slice(prefix.length))) as { id?: unknown };
-    return typeof user.id === 'string' && user.id ? { id: user.id } : null;
-  } catch { return null; }
+  return userFromToken(decodeURIComponent(cookie.slice(prefix.length)));
 }
 
 export function requireApiUser(request: Request): AuthUser | Response {

@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCurrentUser, type AuthUser } from '@/lib/auth';
+import { getCurrentUser, setCurrentUser, type AuthUser } from '@/lib/auth';
 
 const AuthContext = createContext<AuthUser | null>(null);
 
@@ -11,8 +11,15 @@ export function AuthProvider({ initialUser, children }: { initialUser: AuthUser 
   const router = useRouter();
 
   useEffect(() => {
+    let authChanged = false;
+    void fetch('/api/auth', { cache: 'no-store' }).then(async response => {
+      if (authChanged) return;
+      if (!response.ok) { setCurrentUser(null); return; }
+      setCurrentUser(await response.json() as AuthUser);
+    }).catch(() => undefined);
     // Every sign-in method, sign-out, and profile update uses setCurrentUser.
     const sync = (event: Event) => {
+      authChanged = true;
       setUser((event as CustomEvent<AuthUser | null>).detail);
       router.refresh();
     };
@@ -24,6 +31,7 @@ export function AuthProvider({ initialUser, children }: { initialUser: AuthUser 
     window.addEventListener('auth-change', sync);
     window.addEventListener('storage', syncStorage);
     return () => {
+      authChanged = true;
       window.removeEventListener('auth-change', sync);
       window.removeEventListener('storage', syncStorage);
     };

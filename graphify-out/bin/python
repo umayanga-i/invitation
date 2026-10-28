@@ -1,0 +1,12 @@
+#!/bin/bash
+for p in /home/umayanga/.cache/uv/archive-v0/*; do
+    if [ -d "$p" ]; then
+        if [ -z "$PYTHONPATH" ]; then
+            PYTHONPATH="$p"
+        else
+            PYTHONPATH="$PYTHONPATH:$p"
+        fi
+    fi
+done
+export PYTHONPATH
+exec /usr/bin/python3 "$@"

@@ -5,7 +5,9 @@
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { AUTH_COOKIE_NAME } from '@/lib/auth-constants';
+
+const ADMIN_COOKIE = 'invite_admin_session';
+const USER_COOKIE = 'invite_user_session';
 
 /** Routes that require an authenticated session */
 const PROTECTED = ['/dashboard', '/invitations', '/templates', '/profile'];
@@ -14,9 +16,13 @@ const PROTECTED = ['/dashboard', '/invitations', '/templates', '/profile'];
 const AUTH_PAGES = ['/login', '/signup'];
 
 export function proxy(request: NextRequest) {
-  // The auth cookie is set by lib/auth.ts → setAuthCookie() on sign-in.
-  const user = request.cookies.get(AUTH_COOKIE_NAME)?.value;
+  const user = request.cookies.get(USER_COOKIE)?.value;
   const { pathname } = request.nextUrl;
+
+  const isAdminPage = pathname === '/admin' || pathname.startsWith('/admin/');
+  const isAdminApi = pathname === '/api/admin' || pathname.startsWith('/api/admin/');
+  if (isAdminPage && !request.cookies.get(ADMIN_COOKIE)?.value) return new NextResponse(null, { status: 404 });
+  if (isAdminApi && !(pathname === '/api/admin/session' && request.method === 'POST') && !request.cookies.get(ADMIN_COOKIE)?.value) return Response.json({ error: 'Not found.' }, { status: 404 });
 
   const isProtected = PROTECTED.some((p) => pathname.startsWith(p));
   const isAuthPage = AUTH_PAGES.some((p) => pathname.startsWith(p));
@@ -41,6 +47,8 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    '/api/admin/:path*',
+    '/admin/:path*',
     /*
      * Match all request paths EXCEPT:
      *  - api routes
