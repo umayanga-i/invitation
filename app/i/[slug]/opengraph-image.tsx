@@ -11,6 +11,8 @@ export default async function Image({ params }: { params: Promise<{ slug: string
   if (!invitation || invitation.status !== 'published') {
     return invitationSocialImage({ title: 'Invitation not available', eyebrow: 'Invitation link unavailable' });
   }
+
+  
   return invitationSocialImage({
     title: invitation.customData.eventTitle || invitation.title,
     eyebrow: `${invitation.customData.hostNames || 'You are invited'} invite you to celebrate`,

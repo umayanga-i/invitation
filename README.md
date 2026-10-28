@@ -10,6 +10,7 @@ Invitely allows hosts to browse designer invitation templates across multiple ev
 
 - **🎭 Multi-Category Designer Templates**: 18+ handcrafted templates across Weddings, Birthdays, Baby Showers, Housewarming, Religious & Cultural ceremonies, and Corporate events.
 - **⚡ Real-Time Live Preview Editor**: Interactive form on the left (or top on mobile) and instantaneous live preview on the right.
+,
 - **🔗 Dual Invitation Types**:
   - **Common Invitation (`/i/[slug]`)**: A single link to broadcast to friends and family; any guest can RSVP by providing their name and details.
   - **Personal Invitation (`/s/[code]`)**: Personalized, unique short link per guest with pre-filled greeting and locked guest identity.
@@ -131,6 +132,8 @@ For testing and local development, mock authentication is active:
 | **Google** | Button | Instant login as *Demo User* |
 
 *A small developer banner displaying these credentials appears on the `/login` page.*
+
+
 
 ---
 
